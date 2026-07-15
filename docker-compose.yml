@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  database:
+    image: mongo:latest
+    container_name: apexbank_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - smartqueue_network
+    restart: always
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: apexbank_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGO_URI=mongodb://database:27017/smartqueue
+      - ACCESS_TOKEN_SECRET=SuperSecretAccessTokenKeyForApexBankOpsKey
+      - REFRESH_TOKEN_SECRET=SuperSecretRefreshTokenKeyForApexBankOpsKey
+    depends_on:
+      - database
+    networks:
+      - smartqueue_network
+    restart: always
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apexbank_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - smartqueue_network
+    restart: always
+
+volumes:
+  mongo_data:
+
+networks:
+  smartqueue_network:
+    driver: bridge

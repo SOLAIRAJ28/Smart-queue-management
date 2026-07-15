@@ -1,0 +1,425 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Dark Theme Specs */
+  --bg-primary: #1E293B;
+  --bg-secondary: #111827;
+  --bg-card: #0F172A;
+  --border-color: #334155;
+  --primary-color: #2563EB;
+  --primary-hover: #1D4ED8;
+  --success-color: #10B981;
+  --warning-color: #F59E0B;
+  --danger-color: #EF4444;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+
+  /* Global Background (Dark) */
+  --app-bg:
+    radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(139,92,246,0.08), transparent 40%),
+    linear-gradient(135deg, #0F172A 0%, #111827 35%, #172554 70%, #1E293B 100%);
+
+  /* Card System (Dark) */
+  --card-bg: rgba(30, 41, 59, 0.78);
+  --card-border: 1px solid rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+  --card-blur: blur(18px);
+
+  /* Tailwind CSS mapped values for --dark */
+  --dark-50: 248, 250, 252;
+  --dark-100: 248, 250, 252;
+  --dark-200: 248, 250, 252;
+  --dark-300: 148, 163, 184;
+  --dark-400: 148, 163, 184;
+  --dark-500: 148, 163, 184;
+  --dark-600: 51, 65, 85;
+  --dark-700: 51, 65, 85;
+  --dark-800: 30, 41, 59;
+  --dark-900: 15, 23, 42;
+  --dark-950: 30, 41, 59;
+}
+
+[data-theme="light"] {
+  /* Light Theme Specs */
+  --bg-primary: #F8FAFC;
+  --bg-secondary: rgba(255, 255, 255, 0.70);
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --border-color: #E2E8F0;
+  --primary-color: #2563EB;
+  --primary-hover: #1D4ED8;
+  --success-color: #16A34A;
+  --warning-color: #F59E0B;
+  --danger-color: #DC2626;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+
+  /* Global Background (Light) */
+  --app-bg:
+    radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(124,58,237,0.05), transparent 40%),
+    linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 35%, #EEF4FF 70%, #E7EEFF 100%);
+
+  /* Card System (Light) */
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --card-border: 1px solid rgba(255, 255, 255, 0.55);
+  --card-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  --card-blur: blur(18px);
+
+  /* Tailwind CSS mapped values for --dark (Inverted) */
+  --dark-50: 15, 23, 42;
+  --dark-100: 15, 23, 42;
+  --dark-200: 15, 23, 42;
+  --dark-300: 100, 116, 139;
+  --dark-400: 100, 116, 139;
+  --dark-500: 100, 116, 139;
+  --dark-600: 226, 232, 240;
+  --dark-700: 226, 232, 240;
+  --dark-800: 241, 245, 249;
+  --dark-900: 248, 250, 252;
+  --dark-950: 255, 255, 255;
+}
+
+@layer base {
+  body {
+    background: var(--app-bg, var(--bg-primary)) !important;
+    background-attachment: fixed !important;
+    color: var(--text-primary) !important;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    transition: background 300ms ease-in-out, color 300ms ease-in-out !important;
+  }
+}
+
+/* Global background applied to every screen */
+html, body, #root, .min-h-screen, .bg-dark-950 {
+  background: var(--app-bg) !important;
+  background-attachment: fixed !important;
+  transition: background 300ms ease-in-out !important;
+}
+
+/* Nav and header: transparent so global background shows through */
+.bg-dark-900, nav, header {
+  background-color: transparent !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.border-dark-800, .border-dark-700 {
+  border-color: var(--border-color) !important;
+}
+
+/* Premium Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Glass panel redesign: Glassmorphic card floating above gradient */
+.glass-panel {
+  background: var(--card-bg) !important;
+  border: var(--card-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--card-shadow) !important;
+  backdrop-filter: var(--card-blur) !important;
+  -webkit-backdrop-filter: var(--card-blur) !important;
+  transition: background 300ms ease-in-out, border 300ms ease-in-out, box-shadow 300ms ease-in-out !important;
+}
+
+.glass-panel-premium {
+  background: var(--card-bg) !important;
+  border: var(--card-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--card-shadow) !important;
+  backdrop-filter: var(--card-blur) !important;
+  -webkit-backdrop-filter: var(--card-blur) !important;
+  transition: all 300ms ease-in-out !important;
+}
+
+.glass-panel-premium:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.14) !important;
+}
+
+/* Form inputs redesign */
+.glass-input {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  border-radius: 12px !important;
+  height: 50px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  padding-right: 14px !important;
+  padding-left: 14px;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  transition: all 0.2s ease-in-out !important;
+  width: 100%;
+}
+
+.glass-input:hover {
+  border-color: rgba(37, 99, 235, 0.4) !important;
+}
+
+.glass-input:focus {
+  border-color: var(--primary-color) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+.glass-input::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.7;
+}
+
+/* Icon positioning padding helper classes to prevent cursor and text overlapping */
+.glass-input-icon-left {
+  padding-left: 42px !important;
+}
+
+.glass-input-icon-right {
+  padding-right: 42px !important;
+}
+
+/* Login Card: Inherits global card system */
+.login-card {
+  background: var(--card-bg) !important;
+  border: var(--card-border) !important;
+  backdrop-filter: var(--card-blur) !important;
+  -webkit-backdrop-filter: var(--card-blur) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--card-shadow) !important;
+  transition: background 300ms ease-in-out, border 300ms ease-in-out, box-shadow 300ms ease-in-out !important;
+}
+
+/* Buttons redesign */
+.btn-primary {
+  background: var(--primary-color) !important;
+  background-image: none !important;
+  color: #FFFFFF !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 10px 24px !important;
+  height: 50px !important; /* Exact height sync with inputs */
+  border-radius: 12px !important; /* Exact border-radius sync with inputs */
+  border: 1px solid transparent !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover) !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28) !important;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98) !important;
+}
+
+.btn-primary:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+}
+
+.btn-secondary {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  transition: background-color 0.15s ease-in-out, transform 0.1s ease-in-out !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--bg-secondary) !important;
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.98) !important;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+/* Tables styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-secondary) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 10px 16px !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+td {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+}
+
+tr:hover td {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Global design adjustments for Clean UI */
+select.glass-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 18px;
+  padding-right: 32px !important;
+}
+
+/* Light Theme overrides for custom pages */
+[data-theme="light"] .text-white:not(button):not([class*="btn-"]):not([class*="bg-"]) {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .hover\:text-white:hover {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .bg-dark-900\/40,
+[data-theme="light"] .bg-dark-900\/60,
+[data-theme="light"] .bg-dark-950\/40,
+[data-theme="light"] .bg-dark-950\/60,
+[data-theme="light"] .bg-dark-950\/80 {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="light"] .border-dark-800,
+[data-theme="light"] .border-dark-800\/50,
+[data-theme="light"] .border-dark-800\/80,
+[data-theme="light"] .border-dark-700 {
+  border-color: var(--border-color) !important;
+}
+
+/* Skeleton Loading Shimmer overrides */
+.shimmer {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--border-color) 50%, var(--bg-secondary) 75%) !important;
+  background-size: 200% 100% !important;
+  animation: shimmer 1.5s infinite !important;
+}
+
+/* Modern Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  text-transform: capitalize;
+  line-height: 1.5 !important;
+}
+
+.status-badge.waiting {
+  background-color: #FEF3C7 !important;
+  color: #B45309 !important;
+  border: 1px solid #FDE68A !important;
+}
+[data-theme="dark"] .status-badge.waiting {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: #F59E0B !important;
+  border: 1px solid rgba(245, 158, 11, 0.15) !important;
+}
+
+.status-badge.completed {
+  background-color: #D1FAE5 !important;
+  color: #047857 !important;
+  border: 1px solid #A7F3D0 !important;
+}
+[data-theme="dark"] .status-badge.completed {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+}
+
+.status-badge.cancelled {
+  background-color: #FEE2E2 !important;
+  color: #B91C1C !important;
+  border: 1px solid #FCA5A5 !important;
+}
+[data-theme="dark"] .status-badge.cancelled {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #EF4444 !important;
+  border: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+.status-badge.calling {
+  background-color: #DBEAFE !important;
+  color: #1D4ED8 !important;
+  border: 1px solid #BFDBFE !important;
+}
+[data-theme="dark"] .status-badge.calling {
+  background-color: rgba(37, 99, 235, 0.1) !important;
+  color: #3B82F6 !important;
+  border: 1px solid rgba(37, 99, 235, 0.15) !important;
+}
+
+/* Modern Outline Primary Buttons */
+.btn-outline-primary {
+  background-color: transparent !important;
+  border: 1px solid var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  transition: all 0.15s ease-in-out !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color) !important;
+  color: #FFFFFF !important;
+}
+
