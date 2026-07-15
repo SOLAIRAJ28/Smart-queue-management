@@ -7,7 +7,6 @@ import BranchManager from '../models/BranchManager.js';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt.js';
 import { logAction } from '../utils/auditLogger.js';
 import { sendEmail, sendSMS } from '../services/notificationService.js';
-import axios from 'axios';
 import Otp from '../models/Otp.js';
 import OtpSession from '../models/OtpSession.js';
 
