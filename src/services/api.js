@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Normalize URL: Ensure it ends with '/api' if it's a remote URL that doesn't include it
+if (baseURL && !baseURL.endsWith('/api') && !baseURL.includes('localhost:')) {
+  baseURL = `${baseURL.replace(/\/$/, '')}/api`;
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -81,7 +87,7 @@ api.interceptors.response.use(
       if (refreshToken) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/refresh`,
+            `${baseURL}/auth/refresh`,
             { refreshToken }
           );
 
