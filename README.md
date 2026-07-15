@@ -61,6 +61,7 @@ node server/tests/apiIntegration.test.js
 ---
 
 ## 📄 Complete Guides & Manuals
-For details on system design, predictive math formulas, database structure, and deployment stack configurations:
+For details on deployment, system design, predictive math formulas, database structure, and deployment stack configurations:
+*   [Hosting & Deployment Guide](./DEPLOYMENT.md)
 *   [System Architecture & Operations Guide](./brain/e0791ddb-5e3c-4426-add3-b25c6d80a1ac/system_architecture_and_user_guide.md)
 *   [Database Design Documentation](./brain/e0791ddb-5e3c-4426-add3-b25c6d80a1ac/database_design.md)
