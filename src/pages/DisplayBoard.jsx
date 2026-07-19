@@ -154,8 +154,8 @@ const DisplayBoard = () => {
     });
 
     socketRef.current.on('recall_token', (data) => {
-      if (data && data.tokenNumber && data.counterNumber) {
-        announceToken(data.tokenNumber, data.counterNumber, true);
+      if (data && data.token && data.counterNumber) {
+        announceToken(data.token.tokenNumber, data.counterNumber, true);
       }
     });
 
@@ -217,17 +217,46 @@ const DisplayBoard = () => {
   // Keep loadRef always in sync with the latest loadDisplayData
   loadRef.current = loadDisplayData;
 
+  const playBuzzerSound = () => {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const playTone = (freq, startTime, duration) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, startTime);
+        gain.gain.setValueAtTime(0.15, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+        osc.start(startTime);
+        osc.stop(startTime + duration);
+      };
+      // Play a dual-tone "ding-dong" alert chime
+      playTone(523.25, audioCtx.currentTime, 0.25); // C5
+      playTone(659.25, audioCtx.currentTime + 0.2, 0.4);  // E5
+    } catch (err) {
+      console.error('Failed to play alert sound:', err);
+    }
+  };
+
   const announceToken = (tokenNumber, counterNumber, isRecall = false) => {
+    // Play alert buzzer sound in real time
+    playBuzzerSound();
+
     if ('speechSynthesis' in window) {
       // Split characters in token number (e.g. W-2-0-1) for better TTS spelling
       const spacedToken = tokenNumber.split('').join(' ');
-      const text = `Token number, ${spacedToken}, please proceed to Counter ${counterNumber}`;
+      const prefix = isRecall ? 'Recall. ' : '';
+      const text = `${prefix}Token number, ${spacedToken}, please proceed to Counter ${counterNumber}`;
       
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.85; // slightly slower for clarity
-      utterance.pitch = 1.0;
-      
-      window.speechSynthesis.speak(utterance);
+      // Delay speech slightly to let the alert sound finish
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.85; // slightly slower for clarity
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+      }, 600);
     }
   };
 
