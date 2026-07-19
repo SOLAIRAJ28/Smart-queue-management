@@ -1,4 +1,5 @@
 import Service from '../models/Service.js';
+import Counter from '../models/Counter.js';
 
 // Get all services
 export const getServices = async (req, res) => {
@@ -81,21 +82,35 @@ export const createService = async (req, res) => {
 // Update an existing service (Admin only)
 export const updateService = async (req, res) => {
   try {
-    const service = await Service.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!service) {
+    const originalService = await Service.findById(req.params.id);
+    if (!originalService) {
       return res.status(404).json({
         status: 'error',
         message: 'Service not found',
       });
     }
 
+    const service = await Service.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
     const io = req.app.get('io');
     if (io) {
       io.emit('service_updated', { action: 'update', service });
+    }
+
+    // Sync counters if isActive status was updated
+    if (req.body.isActive !== undefined && originalService.isActive !== service.isActive) {
+      const counters = await Counter.find({ currentService: service._id });
+      for (const counter of counters) {
+        counter.status = service.isActive ? 'enabled' : 'disabled';
+        await counter.save();
+        if (io && counter.branch) {
+          io.to(counter.branch.toString()).emit('counterStatusChanged', { counter });
+          io.to(counter.branch.toString()).emit('queue_updated', { action: 'counterStatusChanged', counter });
+        }
+      }
     }
 
     res.status(200).json({
@@ -156,6 +171,17 @@ export const toggleServiceStatus = async (req, res) => {
     const io = req.app.get('io');
     if (io) {
       io.emit('service_updated', { action: 'toggle', service });
+    }
+
+    // Sync counters with service status change
+    const counters = await Counter.find({ currentService: service._id });
+    for (const counter of counters) {
+      counter.status = service.isActive ? 'enabled' : 'disabled';
+      await counter.save();
+      if (io && counter.branch) {
+        io.to(counter.branch.toString()).emit('counterStatusChanged', { counter });
+        io.to(counter.branch.toString()).emit('queue_updated', { action: 'counterStatusChanged', counter });
+      }
     }
 
     res.status(200).json({
