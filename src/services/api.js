@@ -29,6 +29,11 @@ function getCacheKey(config) {
 // Request interceptor: Attach JWT + serve from cache for eligible GET requests
 api.interceptors.request.use(
   (config) => {
+    // Invalidate cache on mutating requests (POST, PUT, PATCH, DELETE)
+    if (config.method && config.method.toLowerCase() !== 'get') {
+      cache.clear();
+    }
+
     const token = localStorage.getItem('token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
