@@ -31,7 +31,7 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
 
     // Serve from cache if available and not expired
@@ -96,7 +96,7 @@ api.interceptors.response.use(
             localStorage.setItem('token', accessToken);
             localStorage.setItem('refreshToken', newRefreshToken);
 
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
             return api(originalRequest);
           }
         } catch (refreshError) {

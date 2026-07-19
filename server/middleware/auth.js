@@ -6,7 +6,7 @@ import BranchManager from '../models/BranchManager.js';
 export const protect = async (req, res, next) => {
   let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (req.headers.authorization && req.headers.authorization.toLowerCase().startsWith('bearer')) {
     token = req.headers.authorization.split(' ')[1];
   }
 
@@ -77,7 +77,7 @@ export const restrictTo = (...roles) => {
 export const optionalProtect = async (req, res, next) => {
   let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (req.headers.authorization && req.headers.authorization.toLowerCase().startsWith('bearer')) {
     token = req.headers.authorization.split(' ')[1];
   }
 
