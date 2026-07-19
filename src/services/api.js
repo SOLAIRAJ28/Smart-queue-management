@@ -11,7 +11,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000, // 15s timeout — avoids silent hangs
+  timeout: 60000, // 60s timeout — avoids silent hangs, accommodates cold starts on free hosting tiers
 });
 
 // --- Lightweight in-memory GET cache ---

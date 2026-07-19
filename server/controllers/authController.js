@@ -156,8 +156,7 @@ export const login = async (req, res) => {
     }
 
     if (!isCounterStaff && !isBranchManager) {
-      user.lastLogin = new Date();
-      await user.save();
+      await User.updateOne({ _id: user._id }, { $set: { lastLogin: new Date() } });
     }
 
     const accessToken = await generateAccessToken(user);

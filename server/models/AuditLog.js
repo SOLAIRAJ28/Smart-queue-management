@@ -53,7 +53,7 @@ AuditLogSchema.pre('save', async function (next) {
 
   try {
     // 1. Fetch the immediately preceding audit log
-    const lastLog = await this.constructor.findOne({}).sort({ timestamp: -1, _id: -1 });
+    const lastLog = await this.constructor.findOne({}).sort({ _id: -1 });
     
     if (lastLog && lastLog.hash) {
       this.previousHash = lastLog.hash;
